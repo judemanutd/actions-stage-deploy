@@ -1,0 +1,77 @@
+name: Develop Build & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Deployment Stage"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
+
+  push:
+    branches:
+      - main
+      - master
+
+# Set the access for individual scopes, or use permissions: write-all
+permissions:
+  pull-requests: write
+  contents: read
+  actions: read
+  deployments: write
+  id-token: write
+
+jobs:
+  develop:
+    name: Develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build
+        run: |
+          cat test.txt
+
+  staging:
+    name: Staging
+    if: github.event.inputs.stage == 'staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build
+        run: |
+          cat test.txt
+
+  production:
+    name: Production
+    if: github.event.inputs.stage == 'production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build
+        run: |
+          cat test.txt
