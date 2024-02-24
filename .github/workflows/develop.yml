@@ -46,6 +46,7 @@ jobs:
     name: Staging
     if: github.event.inputs.stage == 'staging'
     runs-on: ubuntu-latest
+    needs: [develop]
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
@@ -62,6 +63,7 @@ jobs:
   production:
     name: Production
     if: github.event.inputs.stage == 'production'
+    needs: [staging]
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
